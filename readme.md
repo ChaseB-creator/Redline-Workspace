@@ -1,19 +1,19 @@
 Checklist:
 
- [] main menu (index.html)
+ 1. [] main menu (index.html)
  
- [] Interactable Calendar, 
+ 2. [] Interactable Calendar 
  
- [] Dynamic Data Sheet, 
+ 3. [] Dynamic Data Sheet
  
- [] Drawing Page, 
+ 4. [] Drawing Page
  
- [] Photo Gallery, 
+ 5. [] Photo Gallery 
  
- [] Finance Tracker. 
+ 6. [] Finance Tracker 
 
- [] Page/Document creator (converts a written document into PDF)
+ 7. [] Page/Document creator (converts a written document into PDF)
 
- [] Calculator
+ 8. [] Calculator
 
- [] Alarm/Clock/Timer
+ 9. [] Alarm/Clock/Timer
