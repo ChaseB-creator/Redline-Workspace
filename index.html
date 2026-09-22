@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Redline personal workspace dashboard.">
+  <title>Redline — Personal Workspace</title>
+  <style>
+    :root {
+      --ink: #111214;
+      --muted: #85868b;
+      --line: rgba(17, 18, 20, .1);
+      --canvas: #f7f7f5;
+      --red: #d92f3d;
+    }
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body { margin: 0; color: var(--ink); background: var(--canvas); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+    button, a { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    .workspace { min-height: 100vh; display: grid; place-items: center; padding: 42px 42px 42px 188px; }
+
+    .app-wheel { position: fixed; z-index: 5; top: 50%; left: 28px; width: 132px; padding: 12px 10px; border: 1px solid rgba(255,255,255,.08); border-radius: 28px; background: var(--ink); box-shadow: 0 18px 45px rgba(17,18,20,.18); transform: translateY(-50%); }
+    .wheel-label { padding: 6px 5px 12px; color: #707177; font-size: 9px; font-weight: 900; letter-spacing: .16em; text-align: center; text-transform: uppercase; }
+    .wheel-items { display: grid; gap: 5px; }
+    .wheel-item { display: grid; grid-template-columns: 26px 1fr; align-items: center; gap: 7px; min-height: 38px; padding: 4px 5px; border: 1px solid transparent; border-radius: 14px; color: #a9aaae; transition: .2s ease; }
+    .wheel-item:hover, .wheel-item:focus-visible { color: #fff; background: #232428; border-color: #34353a; outline: none; transform: translateX(2px); }
+    .wheel-item.active { color: #fff; background: var(--red); box-shadow: 0 8px 18px rgba(217,47,61,.28); }
+    .wheel-number { width: 26px; height: 26px; display: grid; place-items: center; border: 1px solid #47484d; border-radius: 50%; color: #7e7f84; font-size: 9px; font-weight: 900; }
+    .active .wheel-number { border-color: rgba(255,255,255,.55); color: #fff; }
+    .wheel-name { font-size: 10px; font-weight: 750; line-height: 1.15; }
+
+    .clock-stage { width: min(760px, 100%); display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .brand-lockup { display: inline-flex; align-items: center; gap: 15px; margin-bottom: clamp(48px, 10vh, 112px); text-align: left; }
+    .brand-mark { width: 66px; height: 66px; display: grid; place-items: center; border-radius: 20px; color: #fff; background: var(--red); box-shadow: 0 12px 26px rgba(217,47,61,.25); font-size: 23px; font-weight: 950; letter-spacing: -.12em; }
+    .brand-name { font-size: 27px; font-weight: 850; letter-spacing: -.06em; }
+    .brand-subtitle { margin-top: 3px; color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+    .eyebrow { display: flex; align-items: center; gap: 11px; color: var(--red); font-size: 11px; font-weight: 900; letter-spacing: .2em; text-transform: uppercase; }
+    .eyebrow::before, .eyebrow::after { content: ""; width: 25px; height: 1px; background: currentColor; opacity: .55; }
+    .clock { margin: 17px 0 10px; font-variant-numeric: tabular-nums; font-size: clamp(70px, 13vw, 154px); font-weight: 850; letter-spacing: -.095em; line-height: .95; }
+    .date { color: var(--muted); font-size: 15px; font-weight: 650; letter-spacing: .02em; }
+    .clock-rule { width: 100%; height: 1px; margin-top: clamp(50px, 10vh, 108px); background: var(--line); }
+    .hint { margin: 18px 0 0; color: #a0a1a5; font-size: 12px; }
+    .hint span { color: var(--red); }
+
+    @media (max-width: 720px) { .workspace { padding: 34px 22px 34px 164px; } .app-wheel { left: 14px; width: 132px; } .clock { font-size: clamp(54px, 12vw, 90px); } .brand-lockup { margin-bottom: 70px; } }
+    @media (max-width: 520px) {
+      .workspace { display: block; padding: 28px 18px 36px 118px; }
+      .app-wheel { left: 8px; width: 100px; padding: 9px 7px; border-radius: 21px; }
+      .wheel-item { grid-template-columns: 23px 1fr; gap: 4px; min-height: 35px; padding: 3px; }
+      .wheel-number { width: 23px; height: 23px; font-size: 8px; }
+      .wheel-name { font-size: 8px; }
+      .wheel-label { padding: 5px 1px 8px; font-size: 8px; }
+      .clock-stage { min-height: calc(100vh - 64px); justify-content: center; }
+      .brand-lockup { margin-bottom: 58px; }
+      .brand-mark { width: 54px; height: 54px; border-radius: 16px; font-size: 19px; }
+      .brand-name { font-size: 22px; }
+      .brand-subtitle { font-size: 9px; }
+      .clock { font-size: clamp(42px, 13vw, 70px); letter-spacing: -.1em; }
+      .date { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <aside class="app-wheel" aria-label="Mini application navigation">
+    <div class="wheel-label">Toolkit</div>
+    <nav class="wheel-items">
+      <a class="wheel-item active" href="#dashboard"><span class="wheel-number">01</span><span class="wheel-name">Main menu</span></a>
+      <a class="wheel-item" href="#calendar"><span class="wheel-number">02</span><span class="wheel-name">Calendar</span></a>
+      <a class="wheel-item" href="#data-sheet"><span class="wheel-number">03</span><span class="wheel-name">Data sheet</span></a>
+      <a class="wheel-item" href="#drawing"><span class="wheel-number">04</span><span class="wheel-name">Drawing</span></a>
+      <a class="wheel-item" href="#gallery"><span class="wheel-number">05</span><span class="wheel-name">Gallery</span></a>
+      <a class="wheel-item" href="#finance"><span class="wheel-number">06</span><span class="wheel-name">Finance</span></a>
+      <a class="wheel-item" href="#documents"><span class="wheel-number">07</span><span class="wheel-name">Documents</span></a>
+      <a class="wheel-item" href="#calculator"><span class="wheel-number">08</span><span class="wheel-name">Calculator</span></a>
+      <a class="wheel-item" href="#time"><span class="wheel-number">09</span><span class="wheel-name">Alarm / timer</span></a>
+    </nav>
+  </aside>
+
+  <main class="workspace" id="dashboard">
+    <section class="clock-stage" aria-label="Current time dashboard">
+      <div class="brand-lockup">
+        <div class="brand-mark" aria-hidden="true">R/</div>
+        <div><div class="brand-name">Redline</div><div class="brand-subtitle">Personal workspace</div></div>
+      </div>
+      <div class="eyebrow">Good to see you</div>
+      <time class="clock" id="clock" datetime="">00:00:00</time>
+      <div class="date" id="date">Loading local date…</div>
+      <div class="clock-rule"></div>
+      <p class="hint">Select a tool from the wheel to begin <span>•</span></p>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const clock = document.getElementById('clock');
+      const date = document.getElementById('date');
+      const updateClock = () => {
+        const now = new Date();
+        clock.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        clock.dateTime = now.toISOString();
+        date.textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      };
+      updateClock();
+      window.setInterval(updateClock, 1000);
+    })();
+  </script>
+</body>
+</html>
