@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Redline logo</title>
+  <desc id="desc">White R slash mark on a red rounded square.</desc>
+  <rect width="256" height="256" rx="48" fill="#c94148"/>
+  <g fill="#fff" font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900">
+    <text x="79" y="174" font-size="104" letter-spacing="-12">R</text>
+    <path d="M157 184 191 72h25l-34 112z"/>
+  </g>
+</svg>
