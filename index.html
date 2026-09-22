@@ -14,13 +14,23 @@
       --line: rgba(17, 18, 20, .1);
       --canvas: #f7f7f5;
       --red: #d92f3d;
+      --control-bg: rgba(255, 255, 255, .78);
+      --control-border: rgba(17, 18, 20, .1);
+      --control-shadow: 0 10px 28px rgba(17, 18, 20, .1);
     }
+    body.dark-mode { --ink: #f5f5f2; --muted: #aaaab0; --line: rgba(255,255,255,.14); --canvas: #17181b; --control-bg: rgba(35,36,40,.9); --control-border: rgba(255,255,255,.14); --control-shadow: 0 10px 28px rgba(0,0,0,.3); }
     * { box-sizing: border-box; }
     html, body { min-height: 100%; }
     body { margin: 0; color: var(--ink); background: var(--canvas); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
     button, a { font: inherit; }
     a { color: inherit; text-decoration: none; }
     .workspace { min-height: 100vh; display: grid; place-items: center; padding: 42px 42px 42px 188px; }
+
+    .theme-controls { position: fixed; z-index: 10; top: 28px; right: 30px; display: flex; gap: 5px; padding: 5px; border: 1px solid var(--control-border); border-radius: 14px; background: var(--control-bg); box-shadow: var(--control-shadow); backdrop-filter: blur(12px); }
+    .theme-button { width: 34px; height: 34px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 9px; color: var(--muted); background: transparent; cursor: pointer; transition: .2s ease; }
+    .theme-button:hover, .theme-button:focus-visible { color: var(--ink); background: rgba(217,47,61,.1); outline: none; }
+    .theme-button.active { color: #fff; background: var(--red); box-shadow: 0 5px 12px rgba(217,47,61,.25); }
+    .theme-button svg { width: 16px; height: 16px; fill: currentColor; }
 
     .app-wheel { position: fixed; z-index: 5; top: 50%; left: 28px; width: 132px; padding: 12px 10px; border: 1px solid rgba(255,255,255,.08); border-radius: 28px; background: var(--ink); box-shadow: 0 18px 45px rgba(17,18,20,.18); transform: translateY(-50%); }
     .wheel-label { padding: 6px 5px 12px; color: #707177; font-size: 9px; font-weight: 900; letter-spacing: .16em; text-align: center; text-transform: uppercase; }
@@ -60,10 +70,19 @@
       .brand-subtitle { font-size: 9px; }
       .clock { font-size: clamp(42px, 13vw, 70px); letter-spacing: -.1em; }
       .date { font-size: 12px; }
+      .theme-controls { top: 16px; right: 16px; }
     }
   </style>
 </head>
 <body>
+  <div class="theme-controls" aria-label="Color theme">
+    <button class="theme-button active" id="light-mode" type="button" aria-label="Use light mode" aria-pressed="true" title="Light mode">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5a1 1 0 0 1-1-1V2a1 1 0 1 1 2 0v1.5a1 1 0 0 1-1 1Zm0 17.5a1 1 0 0 1-1-1v-1.5a1 1 0 1 1 2 0V21a1 1 0 0 1-1 1ZM4.5 13H3a1 1 0 1 1 0-2h1.5a1 1 0 1 1 0 2Zm17.5 0h-1.5a1 1 0 1 1 0-2H22a1 1 0 1 1 0 0 2ZM6.7 8.1 5.64 7.04a1 1 0 0 1 1.42-1.42L8.1 6.69A1 1 0 0 1 6.7 8.1Zm10.6 10.6-1.06-1.06a1 1 0 0 1 1.42-1.42l1.06 1.06a1 1 0 0 1-1.42 1.42ZM17.3 8.1a1 1 0 0 1-1.4-1.41l1.06-1.07a1 1 0 1 1 1.42 1.42L17.3 8.1ZM6.7 18.7a1 1 0 0 1-1.42-1.42l1.06-1.06a1 1 0 0 1 1.42 1.42L6.7 18.7ZM12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10Z"/></svg>
+    </button>
+    <button class="theme-button" id="dark-mode" type="button" aria-label="Use dark mode" aria-pressed="false" title="Dark mode">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 15.3a1 1 0 0 0-1.12-.22 7.6 7.6 0 0 1-3.03.62A7.57 7.57 0 0 1 9 8.15c0-1.05.21-2.06.62-3.03A1 1 0 0 0 8.5 3.78 9.5 9.5 0 1 0 20.22 15.5a1 1 0 0 0 .48-.2ZM12 21a7.5 7.5 0 0 1-5.92-12.1 9.58 9.58 0 0 0 8.02 8.02A9.56 9.56 0 0 0 17.1 16 7.5 7.5 0 0 1 12 21Z"/></svg>
+    </button>
+  </div>
   <aside class="app-wheel" aria-label="Mini application navigation">
     <div class="wheel-label">Toolkit</div>
     <nav class="wheel-items">
@@ -95,6 +114,21 @@
 
   <script>
     (() => {
+      const lightMode = document.getElementById('light-mode');
+      const darkMode = document.getElementById('dark-mode');
+      const setTheme = (theme) => {
+        const isDark = theme === 'dark';
+        document.body.classList.toggle('dark-mode', isDark);
+        lightMode.classList.toggle('active', !isDark);
+        darkMode.classList.toggle('active', isDark);
+        lightMode.setAttribute('aria-pressed', String(!isDark));
+        darkMode.setAttribute('aria-pressed', String(isDark));
+        localStorage.setItem('redline-theme', theme);
+      };
+      lightMode.addEventListener('click', () => setTheme('light'));
+      darkMode.addEventListener('click', () => setTheme('dark'));
+      setTheme(localStorage.getItem('redline-theme') || 'light');
+
       const clock = document.getElementById('clock');
       const date = document.getElementById('date');
       const updateClock = () => {
