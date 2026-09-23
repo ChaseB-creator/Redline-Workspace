@@ -8,7 +8,7 @@ Checklist:
  
  4. [/] Drawing Page
  
- 5. [] Photo Gallery 
+ 5. [/] Photo Gallery 
  
  6. [] Finance Tracker 
 
