@@ -4,7 +4,7 @@ Checklist:
  
  2. [/] Interactable Calendar 
  
- 3. [] Dynamic Data Sheet
+ 3. [/] Dynamic Data Sheet
  
  4. [/] Drawing Page
  
