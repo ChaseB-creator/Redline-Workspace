@@ -10,7 +10,7 @@ Checklist:
  
  5. [/] Photo Gallery 
  
- 6. [] Finance Tracker 
+ 6. [/] Finance Tracker 
 
  7. [] Page/Document creator (converts a written document into PDF)
 
