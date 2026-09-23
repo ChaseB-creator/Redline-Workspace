@@ -1,8 +1,8 @@
 Checklist:
 
- 1. [] main menu (index.html)
+ 1. [/] main menu (index.html)
  
- 2. [] Interactable Calendar 
+ 2. [/] Interactable Calendar 
  
  3. [] Dynamic Data Sheet
  
