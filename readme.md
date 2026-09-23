@@ -6,7 +6,7 @@ Checklist:
  
  3. [] Dynamic Data Sheet
  
- 4. [] Drawing Page
+ 4. [/] Drawing Page
  
  5. [] Photo Gallery 
  
