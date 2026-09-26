@@ -12,8 +12,8 @@ Checklist:
  
  6. [/] Finance Tracker 
 
- 7. [] Page/Document creator (converts a written document into PDF)
+ 7. [/] Page/Document creator (converts a written document into PDF)
 
- 8. [] Calculator
+ 8. [/] Calculator
 
- 9. [] Alarm/Clock/Timer
+ 9. [/] Alarm/Clock/Timer
